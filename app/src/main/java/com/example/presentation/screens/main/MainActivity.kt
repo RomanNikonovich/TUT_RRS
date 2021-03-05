@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.model.entity.Article
 import com.example.presentation.R
+import com.example.presentation.base.BaseMVVMActivity
 import com.example.presentation.databinding.ActivityMainBinding
 import com.example.presentation.screens.main.rv_adapter.OnArticleClickListener
 import com.example.presentation.screens.show_article.ShowArticle
@@ -26,20 +27,19 @@ import java.util.*
 
 const val TEXT_KEY = "key"
 
-class MainActivity : AppCompatActivity(), OnArticleClickListener {
+class MainActivity : BaseMVVMActivity<ActivityMainBinding, MainViewModel, MainRouter>(), OnArticleClickListener {
 
+    override fun provideLayoutId() = R.layout.activity_main
 
-    private lateinit var viewModel: MainViewModel
+    override fun provideViewModel() = ViewModelProviders.of(this).get(MainViewModel::class.java)
+
+    override fun provideRouter() = MainRouter(this)
+
     private lateinit var recyclerView: RecyclerView
-    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.viewModel = viewModel
         recyclerView = binding.rvArticles
         recyclerView.adapter = viewModel.adaptRV
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -50,9 +50,7 @@ class MainActivity : AppCompatActivity(), OnArticleClickListener {
             )
         )
         viewModel.adaptRV.setListener(this)
-        viewModel.onCreate()
         observeLiveData()
-        Toast.makeText(this, "", Toast.LENGTH_SHORT).show()
     }
 
 
@@ -72,6 +70,7 @@ class MainActivity : AppCompatActivity(), OnArticleClickListener {
         }
         startActivity(Intent(this, ShowArticle::class.java).putExtra(TEXT_KEY, article.text))
     }
+
 
 }
 

@@ -11,6 +11,8 @@ import com.example.model.bd.AppDataBase
 import com.example.model.entity.Article
 import com.example.model.netWork.getDataNet
 import com.example.presentation.R
+import com.example.presentation.base.BaseRouter
+import com.example.presentation.base.BaseViewModel
 import com.example.presentation.screens.main.rv_adapter.AdaptRV
 import kotlinx.coroutines.*
 import org.jetbrains.annotations.TestOnly
@@ -20,7 +22,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+class MainViewModel : BaseViewModel<BaseRouter>() {
     var isLoading = ObservableBoolean(false)
     val adaptRV = AdaptRV()
     lateinit var listArticleLiveData: LiveData<List<Article>>
@@ -36,7 +38,7 @@ class MainViewModel : ViewModel() {
         App.appComponent.inject(this)
     }
 
-    fun onCreate() {
+    override fun onCreate() {
         listArticleLiveData = db.getArticleDao().getAll().asLiveData()
     }
 
