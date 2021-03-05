@@ -31,9 +31,6 @@ class MainViewModel : BaseViewModel<BaseRouter>() {
     @Inject
     lateinit var db: AppDataBase
 
-    @Inject
-    lateinit var contextMain: Context
-
     init {
         App.appComponent.inject(this)
     }
@@ -68,7 +65,7 @@ class MainViewModel : BaseViewModel<BaseRouter>() {
         viewModelScope.launch(CoroutineExceptionHandler { context, exception ->
             log(exception.message.toString())
             if (exception is IOException)
-                Toast.makeText(contextMain, "Проверьте соединение с интернетом!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(router?.activity, "Проверьте соединение с интернетом!", Toast.LENGTH_SHORT).show()
         }) {
             isLoading.set(false)
             checkMatches(getDataNet())
