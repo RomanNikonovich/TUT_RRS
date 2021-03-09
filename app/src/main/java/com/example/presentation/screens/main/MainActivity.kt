@@ -71,7 +71,6 @@ class MainActivity : BaseMVVMActivity<ActivityMainBinding, MainViewModel, MainRo
         startActivity(Intent(this, ShowArticle::class.java).putExtra(TEXT_KEY, article.text))
     }
 
-
 }
 
 

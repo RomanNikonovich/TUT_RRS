@@ -40,14 +40,8 @@ class MainViewModel : BaseViewModel<BaseRouter>() {
     }
 
     fun sort() {
-        if (sortByDate) {
-            sortByDate = false
-            listArticleLiveData.value?.let {
-                setDataRV(it) }
-        } else {
-            sortByDate = true
-            listArticleLiveData.value?.let { setDataRV(it) }
-        }
+        sortByDate = !sortByDate
+        listArticleLiveData.value?.let { setDataRV(it) }
     }
 
     fun setDataRV(list: List<Article>) {
